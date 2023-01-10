@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container mt-5 text-center" xmlns="http://www.w3.org/1999/html">
+        <h1>Create article</h1>
+        <form method="post" class="col col-md-8 mx-auto">
+            <input type="text" name="title" id="title" class="form-control" placeholder="Title"><br>
+            <textarea name="intro" id="intro" class="form-control" placeholder="Intro"></textarea><br>
+            <textarea name="text" id="text" class="form-control" placeholder="Text"></textarea><br>
+            <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                <input type="submit" class="btn btn-success" value="Submit"><br>
+                <a href="{{ url_for('articles') }}" class="btn btn-success" role="button">  Back  </a>
+            </div>
+
+        </form>
+    </div>
+{% endblock %}
+
+                <a href="/articles/{{ post.id }}/update" class="btn btn-outline-info me-md-2" role="button">Update</a>
+                <a href="/articles/{{ post.id }}/delete" class="btn btn-outline-danger me-md-2" role="button">Delete</a>
+
+            </div>
