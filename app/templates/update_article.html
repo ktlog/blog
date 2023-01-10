@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container mt-5 text-center" xmlns="http://www.w3.org/1999/html">
+        <h1>Update article</h1>
+        <form method="post" class="col col-md-8 mx-auto">
+            <input type="text" name="title" id="title" class="form-control" value="{{ post.title }}" placeholder="Title"><br>
+            <textarea name="intro" id="intro" class="form-control" placeholder="Intro">{{ post.intro }}</textarea><br>
+            <textarea name="text" id="text" class="form-control" placeholder="Text">{{ post.text }}</textarea><br>
+            <input type="submit" class="btn btn-success" value="Update"><br>
+        </form>
+    </div>
+{% endblock %}

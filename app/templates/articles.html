@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container mt-5 text-center">
+        <h1 class="text-center">Articles</h1>
+
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <div class=flashes>
+            {% for message in messages %}
+              <h5 class="alert alert-info col col-md-8 mx-auto mt-5 text-center">{{ message }}</h5>
+            {% endfor %}
+            </div>
+          {% endif %}
+        {% endwith %}
+
+        {% for el in posts %}
+            <div class="alert alert-info col col-md-8 mx-auto">
+                <h2>{{ el.title }}</h2>
+                <p>{{ el.intro }}</p>
+                <p><b>Date: {{ el.date.date() }}</b></p>
+                <a href="/articles/{{ el.id }}" class="btn btn-outline-warning me-md-2" role="button">Read</a>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ post.title }}{% endblock %}
+
+{% block content %}
+    <div class="container mt-5">
+        <h1 class="text-center">{{ post.title }}</h1>
+        <div class="alert alert-info col col-md-8 mx-auto">
+            <p>{{ post.text }}</p>
+            <p><b>Date: {{ post.date.date() }}</b></p>
+            <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                <a href="/articles/{{ post.id }}/update" class="btn btn-outline-info me-md-2" role="button">Update</a>
+                <a href="/articles/{{ post.id }}/delete" class="btn btn-outline-danger me-md-2" role="button">Delete</a>
+                <a href="{{ url_for('articles') }}" class="btn btn-outline-info" role="button">Back</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}
