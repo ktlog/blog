@@ -4,7 +4,7 @@
     <main class="container col-xl-10 col-xxl-8 px-4 py-5 text-center">
         <div class="col-md-10 mx-auto col-lg-5">
             {% for message in get_flashed_messages() %}
-                <p style="color: red;">Error : {{ message }}</p>
+                <p style="color: red;">{{ message }}</p>
             {% endfor %}
             <form method="post" class="p-4 p-md-5 border rounded-3 bg-light">
                 {{ form.hidden_tag() }}
@@ -18,7 +18,7 @@
                       {% for error in form.password.errors %}<p>{{ error }}</p>{% endfor %}
                   </div>
                 <div class="checkbox mb-3">
-                    <p>{{ form.remember() }} {{ form.remember.label }}</p>
+                    <p>{{ form.remember() }} {{ form.remember.label() }}</p>
                 </div>
                 <button class="w-100 btn" type="submit">{{ form.submit(class="w-100 btn btn-lg btn-primary") }}</button>
             </form>

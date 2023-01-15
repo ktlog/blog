@@ -7,14 +7,17 @@ from app.models import Blog, User
 
 
 @app.route('/')
+@login_required
 def index():
-    return render_template('index.html')
+    user = current_user
+    return render_template('index.html', user=user)
 
 
 @app.route('/articles')
 @login_required
 def articles():
-    posts = Blog.query.order_by(Blog.date.desc()).all()
+    user_id = current_user.id
+    posts = db.session.query(Blog).filter_by(user_id=user_id).order_by(Blog.date.desc()).all()
     if not posts:
         flash('There are no articles yet.')
     return render_template('articles.html', posts=posts)
@@ -23,13 +26,13 @@ def articles():
 @app.route('/articles/<int:id>')
 @login_required
 def article(id):
-    post = Blog.query.get(id)
+    post = db.session.query(Blog).get(id)
     return render_template('article.html', post=post)
 
 
 @app.route('/articles/<int:id>/delete')
 def article_delete(id):
-    post = Blog.query.get_or_404(id)
+    post = db.session.query(Blog).get_or_404(id)
 
     try:
         db.session.delete(post)
@@ -46,8 +49,9 @@ def create_article():
         title = request.form['title']
         intro = request.form['intro']
         text = request.form['text']
+        user_id = current_user.id
 
-        post = Blog(title=title, intro=intro, text=text)
+        post = Blog(title=title, intro=intro, text=text, user_id=user_id)
         try:
             db.session.add(post)
             db.session.commit()
@@ -61,7 +65,7 @@ def create_article():
 @app.route('/articles/<int:id>/update', methods=['POST', 'GET'])
 @login_required
 def update_article(id):
-    post = Blog.query.get_or_404(id)
+    post = db.session.query(Blog).get_or_404(id)
     if request.method == 'POST':
         post.title = request.form['title']
         post.intro = request.form['intro']
@@ -76,16 +80,23 @@ def update_article(id):
         return render_template('update_article.html', post=post)
 
 
-@app.route('/signin', methods=['GET', 'POST'])
+@app.route('/signin', methods=['POST', 'GET'])
 def signin():
     form = LoginForm()
     if form.validate_on_submit():
-        user = User.query.filter_by(email=form.email.data).first()
-        if user is not None and user.check_password(form.password.data):
-            login_user(user)
-            next_ = request.args.get("next")
-            return redirect(next_ or url_for('index'))
-        flash('Invalid mail or password.')
+        email = form.email.data
+        password = form.password.data
+        if email and password:
+            user = db.session.query(User).filter_by(email=email).first()
+            if user is not None and user.check_password(password):
+                login_user(user)
+                flash('Successfully signed in.')
+                next_ = request.args.get("next")
+                return redirect(next_ or url_for('index'))
+            flash('Invalid mail or password.')
+            return redirect(url_for('signin'))
+        flash('Fill in the fields.')
+        return redirect(url_for('signin'))
     return render_template('signin.html', form=form)
 
 
@@ -93,26 +104,30 @@ def signin():
 def signup():
     form = RegistrationForm()
     if form.validate_on_submit():
-        user = User(username=form.username.data, email=form.email.data)
-        user.set_password(form.password1.data)
-        if not user:
-            db.session.add(user)
-            db.session.commit()
-            flash("You've successfully signed up")
+        username = form.username.data
+        email = form.email.data
+        password1 = form.password1.data
+        user = db.session.query(User).filter_by(email=email).first()
+        if user:
+            flash('User exists. Sign in, please.')
             return redirect(url_for('signin'))
-        flash("You are registered already. Sign in, please")
+        new_user = User(username=username, email=email)
+        new_user.set_password(password1)
+        db.session.add(new_user)
+        db.session.commit()
+        flash("You've successfully signed up")
         return redirect(url_for('signin'))
     return render_template('signup.html', form=form)
 
 
-@app.route("/logout")
+@app.route("/logout", methods=['GET', 'POST'])
 def logout():
     logout_user()
     return redirect(url_for('index'))
 
 
-@app.route("/forbidden", methods=['GET', 'POST'])
-@login_required
-def protected():
-    return redirect(url_for('signin'))
-
+@app.after_request
+def redirect_to_signin(response):
+    if response.status_code == 401:
+        return redirect(url_for('signin') + '?next=' + request.url)
+    return response

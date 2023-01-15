@@ -2,10 +2,16 @@
 
 {% block content %}
     <div class="container mt-5 text-center">
-        {% if current_user.is_anonymous %}
-            <h2>Hello, guest. Register or login to get your space.</h2>
-        {% else %}
-        <h2>Welcome {{current_user.username}}</h2>
-        {% endif %}
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <div class=flashes>
+            {% for message in messages %}
+              <h5 class="alert alert-info col col-md-8 mx-auto mt-5 text-center">{{ message }}</h5>
+            {% endfor %}
+            </div>
+          {% endif %}
+        {% endwith %}
+        <h1 class="text-center">Main page</h1>
+        <h3 class="text-center">Hi, {{ user }}</h3>
     </div>
 {% endblock %}

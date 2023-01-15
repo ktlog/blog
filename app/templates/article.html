@@ -10,7 +10,8 @@
             <p><b>Date: {{ post.date.date() }}</b></p>
             <div class="d-grid gap-2 d-md-flex justify-content-md-center">
                 <a href="/articles/{{ post.id }}/update" class="btn btn-outline-info me-md-2" role="button">Update</a>
-                <a href="/articles/{{ post.id }}/delete" class="btn btn-outline-danger me-md-2" role="button">Delete</a>
+                <a href="/articles/{{ post.id }}/delete" class="btn btn-outline-danger me-md-2" role="button"
+                   onclick="return confirm('Are you sure you want to delete this entry?')">Delete</a>
                 <a href="{{ url_for('articles') }}" class="btn btn-outline-info" role="button">Back</a>
             </div>
         </div>
