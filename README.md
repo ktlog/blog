@@ -1,5 +1,6 @@
 # blog
 Проект на Flask позволяет создавать, редактировать, читать, удалять статьи. Реализована регистрация, авторизация пользователя. Используется база данных postgres через SQLAlchemy, валидация данных через wtforms, верстка - bootstrap.
+# description
 <img width="1434" alt="register" src="https://user-images.githubusercontent.com/121023287/213177208-5631cc88-2b0f-43b2-a60d-1e37e70c58f3.png">
 <img width="1435" alt="login" src="https://user-images.githubusercontent.com/121023287/213177212-e1d60013-5079-47e3-9dd7-dd43d680f9f2.png">
 <img width="1435" alt="main" src="https://user-images.githubusercontent.com/121023287/213177214-6c12e116-4458-4c39-a20f-8d78fa29f616.png">
