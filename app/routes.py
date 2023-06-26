@@ -9,8 +9,11 @@ from app.models import Blog, User
 @app.route('/')
 @login_required
 def index():
-    user = current_user
-    return render_template('index.html', user=user)
+    try:
+        user = current_user
+        return render_template('index.html', user=user)
+    except Exception as e:
+        return render_template('error.html')
 
 
 @app.route('/articles')
@@ -38,8 +41,8 @@ def article_delete(id):
         db.session.delete(post)
         db.session.commit()
         return redirect(url_for('articles'))
-    except:
-        return 'Error occured while deleting the article'
+    except Exception as ex:
+        return 'Error occured while deleting the article', ex
 
 
 @app.route('/create_article', methods=['POST', 'GET'])
