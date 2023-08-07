@@ -1,14 +1,17 @@
 # Blog
-### Блог, в котором можно:
-- Создавать
-- Читать/Редактировать
-- Удалять статьи
-### И нужно:
-- Зарегистрироваться или авторизоваться 
-### Стек:
+This is the application on which I learned Flask. 
+User authentication and registration is implemented here. 
+After entering the application, the user has access to all CRUD operations with posts:
+- creating
+- reading
+- updating
+- removal
+
+### Stack:
 - Flask
-- SQLAlchemy 
-- Wtforms (валидация данных)
+- Postgres
+- SQLAlchemy
+- Wtforms (data validation)
 - Bootstrap
 
 <h2>register/login</h2>
