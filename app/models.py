@@ -23,7 +23,7 @@ class User(db.Model, UserMixin):
         return check_password_hash(self.password_hash, password)
 
     def __repr__(self):
-        return f'{self.username.capitalize()}. Email: {self.email}. Joined at: {self.joined_at.date()}'
+        return f'{self.username.capitalize()}'
 
 
 class Blog(db.Model):
